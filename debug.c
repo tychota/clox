@@ -3,6 +3,14 @@
 #include "debug.h"
 #include "value.h"
 
+void disassembleChunk(Chunk* chunk, const char* name) {
+    printf("== %s ==\n", name);
+
+    for (int i = 0; i < chunk->count;) {
+        i = disassembleInstruction(chunk, i);
+    }
+}
+
 static int constantInstruction(const char* name, Chunk* chunk,
                                int offset) {
     uint8_t constant = chunk->code[offset + 1];

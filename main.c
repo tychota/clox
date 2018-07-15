@@ -17,6 +17,10 @@ static void repl() {
             break;
         }
 
+        size_t line_len = strlen(line);
+
+        line[line_len] =  '\0';
+
         interpret(line);
     }
 }
