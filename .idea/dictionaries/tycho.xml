@@ -2,6 +2,7 @@
   <dictionary name="tycho">
     <words>
       <w>clox</w>
+      <w>falsey</w>
       <w>prec</w>
       <w>repl</w>
     </words>
