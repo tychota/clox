@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
 
 #include "common.h"
 #include "compiler.h"
 #include "object.h"
+#include "memory.h"
+#include "debug.h"
 
 VM vm;
 
