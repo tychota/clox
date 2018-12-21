@@ -72,7 +72,8 @@ static void adjustCapacity(Table* table, int capacity) {
         table->count++;
     }
 
-    FREE_ARRAY(Value, table->entries, table->capacity);
+    // TODO: Look at the entry of https://github.com/munificent/craftinginterpreters/issues/326
+    FREE_ARRAY(Entry, table->entries, table->capacity);
     table->entries = entries;
     table->capacity = capacity;
 }
@@ -113,4 +114,28 @@ void tableAddAll(Table* from, Table* to) {
             tableSet(to, entry->key, entry->value);
         }
     }
+}
+
+ObjString* tableFindString(Table* table, const char* chars, int length, uint32_t hash) {
+    // If the table is empty, we definitely won't find it.
+    if (table->entries == NULL) return NULL;
+
+    // Figure out where to insert it in the table. Use open addressing and
+    // basic linear probing.
+    uint32_t index = hash % table->capacity;
+
+    for (;;) {
+        Entry* entry = &table->entries[index];
+
+        if (entry->key == NULL) return NULL;
+        if (entry->key->length == length && memcmp(entry->key->chars, chars, (size_t) length) == 0) {
+            // We found it.
+            return entry->key;
+        }
+
+        // Try the next slot.
+        index = (index + 1) % table->capacity;
+    }
+
+    return NULL;
 }
