@@ -72,7 +72,6 @@ static void adjustCapacity(Table* table, int capacity) {
         table->count++;
     }
 
-    // TODO: Look at the entry of https://github.com/munificent/craftinginterpreters/issues/326
     FREE_ARRAY(Entry, table->entries, table->capacity);
     table->entries = entries;
     table->capacity = capacity;
