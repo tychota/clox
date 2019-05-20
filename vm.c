@@ -50,6 +50,18 @@ static InterpretResult run() {
 #define READ_SHORT() (vm.ip += 2, (uint16_t)((vm.ip[-2] << 8) | vm.ip[-1]))
 #define READ_STRING() AS_STRING(READ_CONSTANT())
 
+#define BINARY_INT_OP(valueType, op) \
+    do { \
+      if (!IS_NUMBER(peek(0)) || !IS_NUMBER(peek(1))) { \
+        runtimeError("Operand must be a number"); \
+        return INTERPRET_RUNTIME_ERROR;\
+      }\
+      \
+      int b = AS_NUMBER(pop()); \
+      int a = AS_NUMBER(pop()); \
+      push(valueType(a op b)); \
+    } while (false)
+
 #define BINARY_OP(valueType, op) \
     do { \
       if (!IS_NUMBER(peek(0)) || !IS_NUMBER(peek(1))) { \
@@ -159,6 +171,9 @@ static InterpretResult run() {
             case OP_DIVIDE:
                 BINARY_OP(NUMBER_VAL, /);
                 break;
+            case OP_MODULO:
+                BINARY_INT_OP(NUMBER_VAL, %);
+                break;
             case OP_NOT:
                 push(BOOL_VAL(isFalsey(pop())));
                 break;
@@ -203,6 +218,7 @@ static InterpretResult run() {
 #undef READ_CONSTANT
 #undef READ_STRING
 #undef BINARY_OP
+#undef BINARY_INT_OP
 }
 
 InterpretResult interpret(const char* source) {
