@@ -5,6 +5,8 @@
       <w>falsey</w>
       <w>prec</w>
       <w>repl</w>
+      <w>upvalue</w>
+      <w>upvalues</w>
     </words>
   </dictionary>
 </component>
