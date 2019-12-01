@@ -6,14 +6,14 @@
 #include "common.h"
 
 #ifdef DEBUG_PRINT_CODE
-
 #include "debug.h"
-
 #endif
 
+#include "compiler.h"
 #include "chunk.h"
 #include "scanner.h"
 #include "object.h"
+#include "memory.h"
 
 typedef struct {
     Token current;
@@ -881,4 +881,12 @@ ObjFunction* compile(const char *source) {
 
     ObjFunction* function = endCompiler();
     return parser.hadError ? NULL : function;
+}
+
+void markCompilerRoots() {
+    Compiler* compiler = current;
+    while (compiler != NULL) {
+        markObject((Obj*)compiler->function);
+        compiler = compiler->enclosing;
+    }
 }

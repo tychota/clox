@@ -1,11 +1,16 @@
-fun fib(n) {
-  if (n < 2) return n;
-  err();
-  return fib(n - 2) + fib(n - 1);
+var count = 0;
+var initial = 9999;
+
+var current = initial;
+
+while (current > 1) {
+  count = count + 1;
+
+  if (current % 2 == 0) {
+    current = current / 2;
+  } else {
+    current = current *3 + 1;
+  }
 }
 
-var start = clock();
-print fib(35);
-print clock() - start;
-
-err();
+print count;

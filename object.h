@@ -26,8 +26,11 @@ typedef enum {
     OBJ_UPVALUE
 } ObjType;
 
+static const char *ObjType_str[] = { "CLOSURE", "FUNCTION", "NATIVE", "STRING", "UPVALUE" };
+
 struct sObj {
     ObjType type;
+    bool isMarked;
     struct sObj *next;
 };
 
